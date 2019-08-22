@@ -16,4 +16,4 @@ The easiest way is to mount a volume containing your NGINX config files as
 `/etc/nginx/conf.d`.
 
 The other option is to use this as a base image and copy your config into a
-your custom image. This certainly gives you much more flexibility and control.
+custom image. This certainly gives you much more flexibility and control.
