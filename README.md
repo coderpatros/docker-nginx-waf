@@ -8,7 +8,7 @@ This is an unofficial build of the NGINX web application firewall.
 
 NGINX WAF is NGINX coupled with ModSecurity 3.0.
 
-# Usage
+## Usage
 
 There are a couple of ways you can use this image.
 
@@ -17,3 +17,10 @@ The easiest way is to mount a volume containing your NGINX config files as
 
 The other option is to use this as a base image and copy your config into a
 your custom image. This certainly gives you much more flexibility and control.
+
+And don't forget to mount a volume for `/var/log`.
+
+## Environment Variables
+
+`SEC_RULE_ENGINE` is used to override the `SecRuleEngine` setting. It defaults
+to `On` but can also be set to `DetectionOnly`.

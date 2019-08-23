@@ -2,6 +2,9 @@ FROM ubuntu:18.04
 
 # install nginx as per https://nginx.org/en/linux_packages.html#Ubuntu
 
+# environment variable to override SecRuleEngine setting
+ENV SEC_RULE_ENGINE=On
+
 # install nginx dependencies
 RUN apt-get update \
     && apt-get install -y \
@@ -64,12 +67,13 @@ RUN git clone --depth 1 https://github.com/SpiderLabs/ModSecurity-nginx.git \
     && rm -R nginx-${NGINX_VERSION}.tar.gz
 
 # copy in modsecurity recommended config and our config
+# SecRuleEngine is set in `entrypoint.sh`
 # SecAuditEngine is off as per "Implementing ModSecurity in Production" section of "MODSECURITY 3.0 & NGINX: Quick Start Guide"
 RUN mkdir /etc/nginx/modsec \
     && cd /etc/nginx/modsec \
     && wget https://raw.githubusercontent.com/SpiderLabs/ModSecurity/v3/master/modsecurity.conf-recommended \
     && mv modsecurity.conf-recommended modsecurity.conf \
-    && sed -i "s/SecRuleEngine DetectionOnly/SecRuleEngine On/" modsecurity.conf \
+    && chown root:nginx modsecurity.conf \
     && sed -i "s/SecAuditEngine RelevantOnly/SecAuditEngine off/" modsecurity.conf \
     && wget https://raw.githubusercontent.com/SpiderLabs/ModSecurity/v3/master/unicode.mapping
 COPY modsec.conf /etc/nginx/modsec/main.conf
@@ -83,5 +87,8 @@ RUN wget https://github.com/SpiderLabs/owasp-modsecurity-crs/archive/v3.0.0.tar.
     && cd / \
     && rm -R v3.0.0.tar.gz
 
+# copy in our entrypoint script which handles environment variables on startup
+COPY entrypoint.sh /entrypoint.sh
+
 EXPOSE 8080
-ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
+ENTRYPOINT [ "/entrypoint.sh" ]
