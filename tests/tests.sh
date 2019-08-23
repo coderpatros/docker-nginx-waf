@@ -16,7 +16,7 @@ fi
 
 echo -n "Sending a dodgy request should be forbidden... "
 # using integer overflow attack
-response=$(curl --write-out %{http_code} --silent --output /dev/null http://nginx-waf-detectiononly?arg=2147483648)
+response=$(curl --write-out %{http_code} --silent --output /dev/null http://nginx-waf-defaults?arg=2147483648)
 if [ "403" = "$response" ]; then
     echo "PASSED"
     ((passed++))
@@ -41,7 +41,7 @@ fi
 
 echo -n "Sending a dodgy request should be succeed when in DetectionOnly mode... "
 # using integer overflow attack
-content=$(wget http://nginx-waf-defaults?arg=2147483648 -q -O -)
+content=$(wget http://nginx-waf-detectiononly?arg=2147483648 -q -O -)
 if [[ $content == *"Welcome to nginx!"* ]]; then
     echo "PASSED"
     ((passed++))
