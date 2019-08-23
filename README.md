@@ -9,6 +9,12 @@ This is an unofficial build of the NGINX web application firewall.
 
 NGINX WAF is NGINX coupled with ModSecurity 3.0.
 
+## Tags
+
+There are currently two moving tags, `latest` and `1-latest`.
+
+I recommend tracking `1-latest` as I won't add any breaking changes to it.
+
 ## Usage
 
 There are a couple of ways you can use this image.
@@ -17,7 +23,7 @@ The easiest way is to mount a volume containing your NGINX config files as
 `/etc/nginx/conf.d`.
 
 The other option is to use this as a base image and copy your config into a
-custom image. This certainly gives you much more flexibility and control.
+custom image.
 
 And don't forget to mount a volume for `/var/log`.
 
