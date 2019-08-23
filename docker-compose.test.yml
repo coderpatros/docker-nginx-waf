@@ -1,0 +1,34 @@
+version: "3"
+services:
+  nginx:
+    image: nginx:1.17.3
+    ports:
+      - "80"
+
+  nginx-waf-defaults:
+    build:
+      context: .
+    volumes:
+      - ./tests/nginx-conf.d:/etc/nginx/conf.d
+    ports:
+      - "8080"
+
+  nginx-waf-detectiononly:
+    build:
+      context: .
+    volumes:
+      - ./tests/nginx-conf.d:/etc/nginx/conf.d
+    environment:
+      SEC_RULE_ENGINE: DetectionOnly
+    ports:
+      - "8080"
+
+  sut:
+    build:
+      context: ./tests
+      dockerfile: Dockerfile
+    depends_on:
+      - nginx
+      - nginx-waf-defaults
+      - nginx-waf-detectiononly
+
