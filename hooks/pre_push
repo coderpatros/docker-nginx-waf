@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+#docker tag $IMAGE_NAME $DOCKER_REPO:18.3.1
+echo $IMAGE_NAME
+echo $DOCKER_REPO
