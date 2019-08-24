@@ -30,4 +30,6 @@ And don't forget to mount a volume for `/var/log`.
 ## Environment Variables
 
 `SEC_RULE_ENGINE` is used to override the `SecRuleEngine` setting. It defaults
-to `On` but can also be set to `DetectionOnly`.
+to `On` but can also be set to `DetectionOnly`. Which is recommended when
+first implementing a WAF. There is a possibility of false positives and you
+might need to tweak some rules.
