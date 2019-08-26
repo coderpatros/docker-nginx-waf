@@ -44,7 +44,7 @@ run_test "Sending a dodgy request should be forbidden" "http://nginx-waf-default
 # Tests with in DetectionOnly mode
 run_test "Sending a normal request should succeed when in DetectionOnly mode" "http://nginx-waf-detectiononly" true
 # using integer overflow attack
-run_test "Sending a dodgy request should be succeed when in DetectionOnly mode" "http://nginx-waf-detectiononly?arg=2147483648" true
+run_test "Sending a dodgy request should succeed when in DetectionOnly mode" "http://nginx-waf-detectiononly?arg=2147483648" true
 
 echo
 if [ $failed -eq 0 ]; then
