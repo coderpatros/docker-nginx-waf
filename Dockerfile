@@ -2,7 +2,7 @@ FROM ubuntu:18.04
 
 # install nginx as per https://nginx.org/en/linux_packages.html#Ubuntu
 
-# environment variable to override SecRuleEngine setting
+ENV SEC_AUDIT_ENGINE=Off
 ENV SEC_RULE_ENGINE=On
 
 # install nginx dependencies
@@ -74,7 +74,6 @@ RUN mkdir /etc/nginx/modsec \
     && wget https://raw.githubusercontent.com/SpiderLabs/ModSecurity/v3/master/modsecurity.conf-recommended \
     && mv modsecurity.conf-recommended modsecurity.conf \
     && chown root:nginx modsecurity.conf \
-    && sed -i "s/SecAuditEngine RelevantOnly/SecAuditEngine off/" modsecurity.conf \
     && wget https://raw.githubusercontent.com/SpiderLabs/ModSecurity/v3/master/unicode.mapping
 COPY modsec.conf /etc/nginx/modsec/main.conf
 

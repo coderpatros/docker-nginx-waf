@@ -5,7 +5,7 @@
 
 # NGINX WAF Docker Container
 
-This is an unofficial build of the NGINX web application firewall.
+This is a production ready, unofficial build of the NGINX web application firewall.
 
 NGINX WAF is NGINX coupled with ModSecurity 3.0.
 
@@ -29,7 +29,7 @@ And don't forget to mount a volume for `/var/log`.
 
 ## Environment Variables
 
-`SEC_RULE_ENGINE` is used to override the `SecRuleEngine` setting. It defaults
-to `On` but can also be set to `DetectionOnly`. Which is recommended when
-first implementing a WAF. There is a possibility of false positives and you
-might need to tweak some rules.
+Variable | Purpose | Options | Default
+--- | --- | --- | ----
+`SEC_AUDIT_ENGINE` | Override the `SecAuditEngine` ModSecurity setting. | `On`, `Off`, `RelevantOnly` | `Off`
+`SEC_RULE_ENGINE` | Override the `SecRuleEngine` ModSecurity setting. | `On`, `Off`, `DetectionOnly` | `On`
