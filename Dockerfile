@@ -6,23 +6,23 @@ ENV SEC_AUDIT_ENGINE=Off
 ENV SEC_RULE_ENGINE=On
 
 # install nginx dependencies
-RUN apt-get update \
-    && apt-get install -y \
+RUN apt-get update && apt-get install -y \
         curl \
         gnupg2 \
         ca-certificates \
-        lsb-release
+        lsb-release \
+    && rm -rf /var/lib/apt/lists/*
 
 # add nginx mainline repo and install
 RUN echo "deb http://nginx.org/packages/mainline/ubuntu `lsb_release -cs` nginx" | tee /etc/apt/sources.list.d/nginx.list \
     && curl -fsSL https://nginx.org/keys/nginx_signing.key | apt-key add - \
-    && apt-get update \
-    && apt-get install -y nginx
+    && apt-get update && apt-get install -y nginx \
+    && rm -rf /var/lib/apt/lists/*
 
 # install nginx modsecurity as per "MODSECURITY 3.0 & NGINX: Quick Start Guide"
 
 # install nginx modsecurity dependencies
-RUN apt-get install -y \
+RUN apt-get update && apt-get install -y \
         apt-utils \
         autoconf \
         automake \
@@ -37,7 +37,8 @@ RUN apt-get install -y \
         libyajl-dev \
         pkgconf \
         wget \
-        zlib1g-dev
+        zlib1g-dev \
+    && rm -rf /var/lib/apt/lists/*
 
 # clone modsecurity source and build
 RUN git clone --depth 1 -b v3/master --single-branch https://github.com/SpiderLabs/ModSecurity \
