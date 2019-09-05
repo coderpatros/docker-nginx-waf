@@ -18,8 +18,6 @@ functional and performance tests.
 
 `mainline` has passed functional tests, but not performance tests.
 
-`dev`, well, it's all in the name.
-
 ## Usage
 
 There are a couple of ways you can use this image.
