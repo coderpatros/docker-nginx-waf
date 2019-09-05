@@ -23,7 +23,7 @@ function single_test {
     ((total++))
 }
 
-end=$((SECONDS+60))
+end=$((SECONDS+60*60*24))
 
 while [ $SECONDS -lt $end ]; do
     single_test
