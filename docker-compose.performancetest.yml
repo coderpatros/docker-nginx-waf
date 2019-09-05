@@ -9,13 +9,13 @@ services:
     build:
       context: .
     volumes:
-      - ./load-tests/nginx-conf.d:/etc/nginx/conf.d
+      - ./performance-tests/nginx-conf.d:/etc/nginx/conf.d
     ports:
       - "8080"
 
   sut:
     build:
-      context: ./load-tests
+      context: ./performance-tests
       dockerfile: Dockerfile
     depends_on:
       - nginx

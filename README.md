@@ -11,9 +11,14 @@ NGINX WAF is NGINX coupled with ModSecurity 3.0.
 
 ## Tags
 
-There are currently two moving tags, `latest` and `1-latest`.
+There are currently four moving tags, `latest`, `stable`, `next` and `dev`.
 
-I recommend tracking `1-latest` as I won't add any breaking changes to it.
+`stable` is the recommended tag to use. Builds with this tag have passed both
+functional and performance tests.
+
+`next` has passed functional tests, but not performance tests.
+
+`dev`, well, it's all in the name.
 
 ## Usage
 
