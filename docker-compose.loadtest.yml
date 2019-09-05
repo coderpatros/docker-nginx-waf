@@ -1,0 +1,21 @@
+version: "3"
+services:
+  nginx:
+    image: nginx:1.17.3
+    ports:
+      - "80"
+
+  nginx-waf:
+    build:
+      context: .
+    volumes:
+      - ./load-tests/nginx-conf.d:/etc/nginx/conf.d
+    ports:
+      - "8080"
+
+  sut:
+    build:
+      context: ./load-tests
+      dockerfile: Dockerfile
+    depends_on:
+      - nginx
