@@ -37,14 +37,14 @@ function run_test {
 }
 
 # Tests with the default set up
-run_test "Sending a normal request should succeed" "http://nginx-waf-defaults" true
+run_test "Sending a normal request should succeed" "http://nginx-waf-defaults" true #DevSkim: ignore DS137138
 # using integer overflow attack
-run_test "Sending a dodgy request should be forbidden" "http://nginx-waf-defaults?arg=2147483648" false
+run_test "Sending a dodgy request should be forbidden" "http://nginx-waf-defaults?arg=2147483648" false #DevSkim: ignore DS137138
 
 # Tests with in DetectionOnly mode
-run_test "Sending a normal request should succeed when in DetectionOnly mode" "http://nginx-waf-detectiononly" true
+run_test "Sending a normal request should succeed when in DetectionOnly mode" "http://nginx-waf-detectiononly" true #DevSkim: ignore DS137138
 # using integer overflow attack
-run_test "Sending a dodgy request should succeed when in DetectionOnly mode" "http://nginx-waf-detectiononly?arg=2147483648" true
+run_test "Sending a dodgy request should succeed when in DetectionOnly mode" "http://nginx-waf-detectiononly?arg=2147483648" true #DevSkim: ignore DS137138
 
 echo
 if [ $failed -eq 0 ]; then
