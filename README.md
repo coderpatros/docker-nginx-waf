@@ -11,12 +11,12 @@ NGINX WAF is NGINX coupled with ModSecurity 3.0.
 
 ## Tags
 
-There are currently four moving tags, `latest`, `stable`, `next` and `dev`.
+There are currently four moving tags, `latest`, `stable`, `mainline` and `dev`.
 
 `stable` is the recommended tag to use. Builds with this tag have passed both
 functional and performance tests.
 
-`next` has passed functional tests, but not performance tests.
+`mainline` has passed functional tests, but not performance tests.
 
 `dev`, well, it's all in the name.
 
@@ -38,3 +38,9 @@ Variable | Purpose | Options | Default
 --- | --- | --- | ----
 `SEC_AUDIT_ENGINE` | Override the `SecAuditEngine` ModSecurity setting. | `On`, `Off`, `RelevantOnly` | `Off`
 `SEC_RULE_ENGINE` | Override the `SecRuleEngine` ModSecurity setting. | `On`, `Off`, `DetectionOnly` | `On`
+
+## Contributing
+
+I'm more than happy to receive contributions.
+
+But if you have an idea please create an issue first so we can discuss it.
