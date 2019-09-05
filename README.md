@@ -44,3 +44,5 @@ Variable | Purpose | Options | Default
 I'm more than happy to receive contributions.
 
 But if you have an idea please create an issue first so we can discuss it.
+
+And it takes about 20 minutes to build the container and run tests for pull requests.
