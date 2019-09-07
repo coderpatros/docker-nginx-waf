@@ -11,12 +11,25 @@ NGINX WAF is NGINX coupled with ModSecurity 3.0.
 
 ## Tags
 
-There are currently four moving tags, `latest`, `stable`, `mainline` and `dev`.
+There are currently three moving tags, `stable`, `mainline` and `latest`.
 
-`stable` is the recommended tag to use. Builds with this tag have passed both
-functional and performance tests.
+`stable` is the recommended tag to use. Builds with this tag have passed
+functional, performance and burn in tests.
 
-`mainline` has passed functional tests, but not performance tests.
+`mainline` has passed functional and performance tests, but not burn in tests.
+
+## Tests
+
+_Functional tests_ perform a sequence of requests to validate that the rule
+engine is working as configured. i.e. dodgy requests are being blocked, normal
+requests are being allowed.
+
+_Performance tests_ time how long it takes to make 100,000 requests. The time
+taken is compared to previous baseline runs from the stable branch. This is to
+ensure no unexpected performance regressions creep in.
+
+_Burn in_ tests are run for 5 hours. They just make as many requests as
+possible during that time.
 
 ## Usage
 
@@ -43,4 +56,4 @@ I'm more than happy to receive contributions.
 
 But if you have an idea please create an issue first so we can discuss it.
 
-And it takes about 20 minutes to build the container and run tests for pull requests.
+And it takes about 20 minutes to build the container and run functional tests for pull requests.
