@@ -94,10 +94,10 @@ if __name__ == '__main__':
         else:
             target_z_score = 0.0
         print('Target z-score:', target_z_score)
-        if abs(z_score) > target_z_score:
-            print('Z-score outside of target range')
+        if z_score > target_z_score:
+            print('Z-score above target')
             exit(1)
         else:
-            print('Z-score within target range')
+            print('Z-score below target')
 
     exit(FAILED)
