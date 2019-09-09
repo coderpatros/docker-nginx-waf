@@ -4,12 +4,14 @@ services:
     image: nginx:1.17.3
     ports:
       - "80"
+    volumes:
+      - ./nginx-conf.d:/etc/nginx/conf.d
 
   nginx-waf:
     build:
       context: .
     volumes:
-      - ./nginx-conf.d:/etc/nginx/conf.d
+      - ./nginx-waf-conf.d:/etc/nginx/conf.d
     ports:
       - "8080"
 
