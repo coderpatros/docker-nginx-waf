@@ -14,7 +14,7 @@ keep_running = True
 
 def single_test():
     current_timestamp = time.time()
-    url = 'http://nginx?t=' + str(current_timestamp) #DevSkim: ignore DS137138
+    url = 'http://nginx-waf:8080?t=' + str(current_timestamp) #DevSkim: ignore DS137138
     try:
         contents = urllib.request.urlopen(url).read()
         return b'Welcome to nginx!' in contents

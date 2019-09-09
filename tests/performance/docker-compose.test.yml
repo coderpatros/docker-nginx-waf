@@ -9,7 +9,7 @@ services:
 
   nginx-waf:
     build:
-      context: .
+      context: ../../
     volumes:
       - ./nginx-waf-conf.d:/etc/nginx/conf.d
     ports:
@@ -25,3 +25,4 @@ services:
       - Z_SCORE=${Z_SCORE}
     depends_on:
       - nginx
+      - nginx-waf

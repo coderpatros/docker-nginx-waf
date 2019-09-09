@@ -7,7 +7,7 @@ import threading
 import time
 import urllib.request
 
-TARGET_TOTAL=500000
+TARGET_TOTAL=250000
 CONCURRENCY=200
 
 PASSED = 0
@@ -18,7 +18,7 @@ state_lock = threading.Lock()
 
 def single_test():
     current_timestamp = time.time()
-    url = 'http://nginx?t=' + str(current_timestamp) #DevSkim: ignore DS137138
+    url = 'http://nginx-waf:8080?t=' + str(current_timestamp) #DevSkim: ignore DS137138
     try:
         contents = urllib.request.urlopen(url).read()
         return b'Welcome to nginx!' in contents
@@ -87,6 +87,7 @@ if __name__ == '__main__':
         print('Mean:', mean)
         standard_deviation = statistics.stdev(build_durations)
         print('Standard deviation:', standard_deviation)
+        print('This run:', duration.total_seconds())
         z_score = (duration.total_seconds() - mean) / standard_deviation
         print('Z-score:', z_score)
         if 'Z_SCORE' in os.environ:

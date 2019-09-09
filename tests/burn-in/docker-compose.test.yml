@@ -9,7 +9,7 @@ services:
 
   nginx-waf:
     build:
-      context: .
+      context: ../../
     volumes:
       - ./nginx-waf-conf.d:/etc/nginx/conf.d
     ports:
@@ -21,3 +21,4 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - nginx
+      - nginx-waf
