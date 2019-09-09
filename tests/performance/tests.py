@@ -7,7 +7,7 @@ import threading
 import time
 import urllib.request
 
-TARGET_TOTAL=250000
+TARGET_TOTAL=500000
 CONCURRENCY=200
 
 PASSED = 0
