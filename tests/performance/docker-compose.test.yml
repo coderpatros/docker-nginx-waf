@@ -21,5 +21,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./:/data
+    environment:
+      - Z_SCORE=${Z_SCORE}
     depends_on:
       - nginx
