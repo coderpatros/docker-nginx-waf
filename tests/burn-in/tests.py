@@ -5,7 +5,7 @@ import time
 import urllib.request
 
 CONCURRENCY=200
-
+TARGET_DURATION_MINUTES=60*5
 PASSED = 0
 FAILED = 0
 
@@ -47,7 +47,7 @@ if __name__ == '__main__':
         this_worker.start()
         workers.append(this_worker)
 
-    run_until = start + datetime.timedelta(hours=5)
+    run_until = start + datetime.timedelta(minutes=TARGET_DURATION_MINUTES)
     while datetime.datetime.utcnow() < run_until:
         time.sleep(10)
     
