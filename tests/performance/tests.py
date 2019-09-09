@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 import datetime
+import json
+import os
+import statistics
 import threading
 import time
 import urllib.request
@@ -63,5 +66,38 @@ if __name__ == '__main__':
     print('Time taken', duration)
     print('Average of', TOTAL / duration.total_seconds(), 'requests/second')
     print('PASSED:', PASSED, ' FAILED:', FAILED, ' TOTAL:', TOTAL)
+
+    if os.path.isfile('previous-builds.json'):
+        with open('previous-builds.json', 'rt') as f:
+            builds_json = f.read()
+        builds = json.loads(builds_json)
+        build_durations = []
+        time_format = '%Y-%m-%dT%H:%M:%S'
+        for build in builds:
+            start_time = datetime.datetime.strptime(build['startTime'].partition('.')[0], time_format)
+            finish_time = datetime.datetime.strptime(build['finishTime'].partition('.')[0], time_format)
+            duration = finish_time - start_time
+            build_durations.append(duration.total_seconds())
+        # Formula for Z score = (Observation — Mean)/Standard Deviation
+        print()
+        print('Count:', len(build_durations))
+        print('Max:', max(build_durations))
+        print('Min:', min(build_durations))
+        mean = statistics.mean(build_durations)
+        print('Mean:', mean)
+        standard_deviation = statistics.stdev(build_durations)
+        print('Standard deviation:', standard_deviation)
+        z_score = (duration.total_seconds() - mean) / standard_deviation
+        print('Z-score:', z_score)
+        if 'Z_SCORE' in os.environ:
+            target_z_score = float(os.environ['Z_SCORE'])
+        else:
+            target_z_score = 0.0
+        print('Target z-score:', target_z_score)
+        if abs(z_score) > target_z_score:
+            print('Z-score outside of target range')
+            exit(1)
+        else:
+            print('Z-score within target range')
 
     exit(FAILED)

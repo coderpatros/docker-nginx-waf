@@ -4,6 +4,6 @@ RUN apt-get update \
     && apt-get install -y \
         python3
 
-COPY tests.py /tests.py
+COPY tests.py previous-builds.json* /
 
 ENTRYPOINT [ "/tests.py" ]

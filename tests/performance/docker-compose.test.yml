@@ -17,5 +17,7 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
+    volumes:
+      - ./:/data
     depends_on:
       - nginx
