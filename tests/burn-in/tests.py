@@ -4,7 +4,7 @@ import threading
 import time
 import urllib.request
 
-CONCURRENCY=200
+CONCURRENCY=100
 TARGET_DURATION_MINUTES=60*5
 PASSED = 0
 FAILED = 0
@@ -18,7 +18,8 @@ def single_test():
     try:
         contents = urllib.request.urlopen(url).read()
         return b'Welcome to nginx!' in contents
-    except:
+    except Exception as exc:
+        print('FAILED REQUEST:', url, exc)
         return False
 
 def test():

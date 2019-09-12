@@ -8,7 +8,7 @@ import time
 import urllib.request
 
 TARGET_TOTAL=250000
-CONCURRENCY=200
+CONCURRENCY=100
 
 PASSED = 0
 FAILED = 0
@@ -22,7 +22,8 @@ def single_test():
     try:
         contents = urllib.request.urlopen(url).read()
         return b'Welcome to nginx!' in contents
-    except:
+    except Exception as exc:
+        print('FAILED REQUEST:', url, exc)
         return False
 
 def test_batch():
@@ -91,7 +92,7 @@ if __name__ == '__main__':
         z_score = (duration.total_seconds() - mean) / standard_deviation
         print('Z-score:', z_score)
         if 'Z_SCORE' in os.environ:
-            target_z_score = float(os.environ['Z_SCORE'])
+            target_z_score = float(os.environ['Z_SCORE'] or 0)
         else:
             target_z_score = 0.0
         print('Target z-score:', target_z_score)
