@@ -39,7 +39,7 @@ def test():
     state_lock.release()
 
 if __name__ == '__main__':
-    start = datetime.datetime.utcnow()
+    start = datetime.datetime.now()
 
     # start all the workers
     workers = []

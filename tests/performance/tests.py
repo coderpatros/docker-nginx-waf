@@ -45,6 +45,11 @@ def test_batch():
 
 if __name__ == '__main__':
     start = datetime.datetime.utcnow()
+    # this is so the image building factors in as it is included in previous-builds.json times
+    if os.path.isfile('start.timestamp'):
+        with open('start.timestamp') as f:
+            start_timestamp = f.read()
+        start = datetime.datetime.fromtimestamp
 
     # start all the workers
     workers = []
