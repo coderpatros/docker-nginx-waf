@@ -97,14 +97,14 @@ if __name__ == '__main__':
         z_score = (duration.total_seconds() - mean) / standard_deviation
         print('Z-score:', z_score)
         if 'Z_SCORE' in os.environ:
-            target_z_score = float(os.environ['Z_SCORE'] or 0)
+            max_z_score = float(os.environ['Z_SCORE'] or 0)
         else:
-            target_z_score = 0.0
-        print('Target z-score:', target_z_score)
-        if z_score > target_z_score:
-            print('Z-score above target')
+            max_z_score = 0.0
+        print('Maximum z-score:', max_z_score)
+        if z_score > max_z_score:
+            print('Z-score above maximum')
             exit(1)
         else:
-            print('Z-score below target')
+            print('Z-score below maximum')
 
     exit(FAILED)
