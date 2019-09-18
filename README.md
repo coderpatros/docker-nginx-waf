@@ -36,6 +36,8 @@ possible during that time.
 
 There are a couple of ways you can use this image.
 
+For example config refer to `tests/nginx-conf.d/example.conf`.
+
 The easiest way is to mount a volume containing your NGINX config files as
 `/etc/nginx/conf.d`.
 
@@ -43,13 +45,6 @@ The other option is to use this as a base image and copy your config into a
 custom image.
 
 And don't forget to mount a volume for `/var/log`.
-
-## Environment Variables
-
-Variable | Purpose | Options | Default
---- | --- | --- | ----
-`SEC_AUDIT_ENGINE` | Override the `SecAuditEngine` ModSecurity setting. | `On`, `Off`, `RelevantOnly` | `Off`
-`SEC_RULE_ENGINE` | Override the `SecRuleEngine` ModSecurity setting. | `On`, `Off`, `DetectionOnly` | `On`
 
 ## Contributing
 
