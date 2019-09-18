@@ -5,6 +5,8 @@ FROM ubuntu:18.04
 ENV SEC_AUDIT_ENGINE=Off
 ENV SEC_RULE_ENGINE=On
 
+ARG OWASP_CRS_VERSION=3.1.1
+
 # install nginx dependencies
 RUN apt-get update && apt-get install -y \
         curl \
@@ -79,13 +81,13 @@ RUN mkdir /etc/nginx/modsec \
 COPY modsec.conf /etc/nginx/modsec/main.conf
 
 # download OWASP CRS
-RUN wget https://github.com/SpiderLabs/owasp-modsecurity-crs/archive/v3.0.0.tar.gz \
-    && tar -xzvf v3.0.0.tar.gz \
-    && mv owasp-modsecurity-crs-3.0.0 /usr/local \
-    && cd /usr/local/owasp-modsecurity-crs-3.0.0 \
+RUN wget -O owasp-crs.tar.gz https://github.com/SpiderLabs/owasp-modsecurity-crs/archive/v${OWASP_CRS_VERSION}.tar.gz \
+    && tar -xzvf owasp-crs.tar.gz \
+    && mv owasp-modsecurity-crs-${OWASP_CRS_VERSION}/ /usr/local/owasp-modsecurity-crs/ \
+    && cd /usr/local/owasp-modsecurity-crs \
     && cp crs-setup.conf.example crs-setup.conf \
     && cd / \
-    && rm -R v3.0.0.tar.gz
+    && rm -R owasp-crs.tar.gz
 
 # copy in our entrypoint script which handles environment variables on startup
 COPY entrypoint.sh /entrypoint.sh
