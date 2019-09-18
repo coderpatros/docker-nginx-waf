@@ -76,9 +76,13 @@ RUN mkdir /etc/nginx/modsec \
     && cd /etc/nginx/modsec \
     && wget https://raw.githubusercontent.com/SpiderLabs/ModSecurity/v3/master/modsecurity.conf-recommended \
     && mv modsecurity.conf-recommended modsecurity.conf \
+    && cp modsecurity.conf modsecurity-detectiononly.conf \
+    && sed -i "s/SecAuditEngine \S*/SecAuditEngine Off/" /etc/nginx/modsec/modsecurity.conf \
+    && sed -i "s/SecRuleEngine \S*/SecRuleEngine On/" /etc/nginx/modsec/modsecurity.conf \
     && chown root:nginx modsecurity.conf \
     && wget https://raw.githubusercontent.com/SpiderLabs/ModSecurity/v3/master/unicode.mapping
 COPY modsec.conf /etc/nginx/modsec/main.conf
+COPY modsec-detectiononly.conf /etc/nginx/modsec/main-detectiononly.conf
 
 # download OWASP CRS
 RUN wget -O owasp-crs.tar.gz https://github.com/SpiderLabs/owasp-modsecurity-crs/archive/v${OWASP_CRS_VERSION}.tar.gz \
