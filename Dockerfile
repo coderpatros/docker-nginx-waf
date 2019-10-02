@@ -1,9 +1,10 @@
 FROM ubuntu:18.04
 
-# install nginx as per https://nginx.org/en/linux_packages.html#Ubuntu
+ARG NGINX_VERSION=1.17.3
+ARG MODSECURITY_VERSION=3.0.3
+ARG OWASP_CRS_VERSION=3.1.1
 
-ENV SEC_AUDIT_ENGINE=Off
-ENV SEC_RULE_ENGINE=On
+# install nginx as per https://nginx.org/en/linux_packages.html#Ubuntu
 
 # install nginx dependencies
 RUN apt-get update && apt-get install -y \
@@ -16,7 +17,9 @@ RUN apt-get update && apt-get install -y \
 # add nginx mainline repo and install
 RUN echo "deb http://nginx.org/packages/mainline/ubuntu `lsb_release -cs` nginx" | tee /etc/apt/sources.list.d/nginx.list \
     && curl -fsSL https://nginx.org/keys/nginx_signing.key | apt-key add - \
-    && apt-get update && apt-get install -y nginx \
+    && apt-get update \
+    && NGINX_DEB_VERSION=$(apt list -a nginx | grep "${NGINX_VERSION}-" | cut -d' ' -f2) \
+    && apt-get install -y nginx=${NGINX_DEB_VERSION} \
     && rm -rf /var/lib/apt/lists/*
 
 # install nginx modsecurity as per "MODSECURITY 3.0 & NGINX: Quick Start Guide"
@@ -41,7 +44,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # clone modsecurity source and build
-RUN git clone --depth 1 -b v3/master --single-branch https://github.com/SpiderLabs/ModSecurity \
+RUN git clone --depth 1 --branch v${MODSECURITY_VERSION} https://github.com/SpiderLabs/ModSecurity \
     && cd ModSecurity \
     && git submodule init \
     && git submodule update \
@@ -72,22 +75,26 @@ RUN git clone --depth 1 https://github.com/SpiderLabs/ModSecurity-nginx.git \
 # SecAuditEngine is off as per "Implementing ModSecurity in Production" section of "MODSECURITY 3.0 & NGINX: Quick Start Guide"
 RUN mkdir /etc/nginx/modsec \
     && cd /etc/nginx/modsec \
-    && wget https://raw.githubusercontent.com/SpiderLabs/ModSecurity/v3/master/modsecurity.conf-recommended \
+    && wget https://raw.githubusercontent.com/SpiderLabs/ModSecurity/v${MODSECURITY_VERSION}/modsecurity.conf-recommended \
     && mv modsecurity.conf-recommended modsecurity.conf \
+    && cp modsecurity.conf modsecurity-detectiononly.conf \
+    && sed -i "s/SecAuditEngine \S*/SecAuditEngine Off/" /etc/nginx/modsec/modsecurity.conf \
+    && sed -i "s/SecRuleEngine \S*/SecRuleEngine On/" /etc/nginx/modsec/modsecurity.conf \
     && chown root:nginx modsecurity.conf \
-    && wget https://raw.githubusercontent.com/SpiderLabs/ModSecurity/v3/master/unicode.mapping
+    && wget https://raw.githubusercontent.com/SpiderLabs/ModSecurity/v${MODSECURITY_VERSION}/unicode.mapping
 COPY modsec.conf /etc/nginx/modsec/main.conf
+COPY modsec-detectiononly.conf /etc/nginx/modsec/main-detectiononly.conf
 
 # download OWASP CRS
-RUN wget https://github.com/SpiderLabs/owasp-modsecurity-crs/archive/v3.0.0.tar.gz \
-    && tar -xzvf v3.0.0.tar.gz \
-    && mv owasp-modsecurity-crs-3.0.0 /usr/local \
-    && cd /usr/local/owasp-modsecurity-crs-3.0.0 \
+RUN wget -O owasp-crs.tar.gz https://github.com/SpiderLabs/owasp-modsecurity-crs/archive/v${OWASP_CRS_VERSION}.tar.gz \
+    && tar -xzvf owasp-crs.tar.gz \
+    && mv owasp-modsecurity-crs-${OWASP_CRS_VERSION}/ /usr/local/owasp-modsecurity-crs/ \
+    && cd /usr/local/owasp-modsecurity-crs \
     && cp crs-setup.conf.example crs-setup.conf \
     && cd / \
-    && rm -R v3.0.0.tar.gz
+    && rm -R owasp-crs.tar.gz
 
-# copy in our entrypoint script which handles environment variables on startup
+# copy in our entrypoint script
 COPY entrypoint.sh /entrypoint.sh
 
 EXPOSE 8080

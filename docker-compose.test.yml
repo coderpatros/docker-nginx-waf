@@ -5,23 +5,14 @@ services:
     ports:
       - "80"
 
-  nginx-waf-defaults:
+  nginx-waf:
     build:
       context: .
     volumes:
       - ./tests/nginx-conf.d:/etc/nginx/conf.d
     ports:
       - "8080"
-
-  nginx-waf-detectiononly:
-    build:
-      context: .
-    volumes:
-      - ./tests/nginx-conf.d:/etc/nginx/conf.d
-    environment:
-      SEC_RULE_ENGINE: DetectionOnly
-    ports:
-      - "8080"
+      - "8081"
 
   sut:
     build:
@@ -29,6 +20,5 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - nginx
-      - nginx-waf-defaults
-      - nginx-waf-detectiononly
+      - nginx-waf
 
