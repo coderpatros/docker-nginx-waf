@@ -94,7 +94,7 @@ RUN wget -O owasp-crs.tar.gz https://github.com/SpiderLabs/owasp-modsecurity-crs
     && cd / \
     && rm -R owasp-crs.tar.gz
 
-# copy in our entrypoint script which handles environment variables on startup
+# copy in our entrypoint script
 COPY entrypoint.sh /entrypoint.sh
 
 EXPOSE 8080
