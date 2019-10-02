@@ -6,9 +6,6 @@ ARG OWASP_CRS_VERSION=3.1.1
 
 # install nginx as per https://nginx.org/en/linux_packages.html#Ubuntu
 
-ENV SEC_AUDIT_ENGINE=Off
-ENV SEC_RULE_ENGINE=On
-
 # install nginx dependencies
 RUN apt-get update && apt-get install -y \
         curl \
