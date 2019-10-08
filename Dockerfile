@@ -6,12 +6,13 @@ ARG OWASP_CRS_VERSION=3.1.1
 
 # install nginx as per https://nginx.org/en/linux_packages.html#Ubuntu
 
-# install nginx dependencies
+# install nginx dependencies and other tools
 RUN apt-get update && apt-get install -y \
         curl \
         gnupg2 \
         ca-certificates \
         lsb-release \
+        logrotate \
     && rm -rf /var/lib/apt/lists/*
 
 # add nginx mainline repo and install
