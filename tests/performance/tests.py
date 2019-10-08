@@ -84,6 +84,7 @@ if __name__ == '__main__':
             finish_time = datetime.datetime.strptime(build['finishTime'].partition('.')[0], time_format)
             duration = finish_time - start_time
             build_durations.append(duration.total_seconds())
+        print('Build durations:', build_durations)
         # Formula for Z score = (Observation — Mean)/Standard Deviation
         print()
         print('Count:', len(build_durations))
