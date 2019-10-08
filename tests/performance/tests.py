@@ -49,7 +49,7 @@ if __name__ == '__main__':
     if os.path.isfile('start.timestamp'):
         with open('start.timestamp') as f:
             start_timestamp = f.read()
-        start = datetime.datetime.fromtimestamp
+        start = datetime.datetime.fromtimestamp(start_timestamp)
 
     # start all the workers
     workers = []
@@ -69,6 +69,8 @@ if __name__ == '__main__':
     # give nginx a chance to finish flushing it's console output
     time.sleep(10)
 
+    print('Start', start)
+    print('Finish', finish)
     print('Time taken', duration)
     print('Average of', TOTAL / duration.total_seconds(), 'requests/second')
     print('PASSED:', PASSED, ' FAILED:', FAILED, ' TOTAL:', TOTAL)
@@ -82,8 +84,8 @@ if __name__ == '__main__':
         for build in builds:
             start_time = datetime.datetime.strptime(build['startTime'].partition('.')[0], time_format)
             finish_time = datetime.datetime.strptime(build['finishTime'].partition('.')[0], time_format)
-            duration = finish_time - start_time
-            build_durations.append(duration.total_seconds())
+            this_duration = finish_time - start_time
+            build_durations.append(this_duration.total_seconds())
         print('Build durations:', build_durations)
         # Formula for Z score = (Observation — Mean)/Standard Deviation
         print()
