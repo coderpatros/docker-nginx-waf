@@ -29,8 +29,8 @@ _Performance tests_ time how long it takes to make 250,000 requests. The time
 taken is compared to previous baseline runs from the stable branch. This is to
 ensure no unexpected performance regressions creep in.
 
-_Burn in_ tests are run for 5 hours. They just make as many requests as
-possible during that time.
+_Burn in_ tests are the same as performance tests except 10,000,000 requests are
+made.
 
 ## Usage
 
