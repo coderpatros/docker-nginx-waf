@@ -23,6 +23,7 @@ services:
       - ./:/data
     environment:
       - Z_SCORE=${Z_SCORE}
+      - TARGET_TOTAL=${TARGET_TOTAL}
     depends_on:
       - nginx
       - nginx-waf

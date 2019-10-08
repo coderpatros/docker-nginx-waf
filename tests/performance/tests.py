@@ -7,7 +7,10 @@ import threading
 import time
 import urllib.request
 
-TARGET_TOTAL=250000
+if 'TARGET_TOTAL' in os.environ:
+    TARGET_TOTAL = int(os.environ['TARGET_TOTAL'] or 0)
+else:
+    TARGET_TOTAL = 250000
 CONCURRENCY=100
 
 PASSED = 0
@@ -79,35 +82,40 @@ if __name__ == '__main__':
         with open('previous-builds.json', 'rt') as f:
             builds_json = f.read()
         builds = json.loads(builds_json)
-        build_durations = []
-        time_format = '%Y-%m-%dT%H:%M:%S'
-        for build in builds:
-            start_time = datetime.datetime.strptime(build['startTime'].partition('.')[0], time_format)
-            finish_time = datetime.datetime.strptime(build['finishTime'].partition('.')[0], time_format)
-            this_duration = finish_time - start_time
-            build_durations.append(this_duration.total_seconds())
-        print('Build durations:', build_durations)
-        # Formula for Z score = (Observation — Mean)/Standard Deviation
-        print()
-        print('Count:', len(build_durations))
-        print('Max:', max(build_durations))
-        print('Min:', min(build_durations))
-        mean = statistics.mean(build_durations)
-        print('Mean:', mean)
-        standard_deviation = statistics.stdev(build_durations)
-        print('Standard deviation:', standard_deviation)
-        print('This run:', duration.total_seconds())
-        z_score = (duration.total_seconds() - mean) / standard_deviation
-        print('Z-score:', z_score)
-        if 'Z_SCORE' in os.environ:
-            max_z_score = float(os.environ['Z_SCORE'] or 0)
+        if len(builds) < 5:
+            print('Insufficient build history to perform analysis')
         else:
-            max_z_score = 0.0
-        print('Maximum z-score:', max_z_score)
-        if z_score > max_z_score:
-            print('Z-score above maximum')
-            exit(1)
-        else:
-            print('Z-score below maximum')
+            build_durations = []
+            time_format = '%Y-%m-%dT%H:%M:%S'
+            for build in builds:
+                start_time = datetime.datetime.strptime(build['startTime'].partition('.')[0], time_format)
+                finish_time = datetime.datetime.strptime(build['finishTime'].partition('.')[0], time_format)
+                this_duration = finish_time - start_time
+                build_durations.append(this_duration.total_seconds())
+            while len(build_durations) < 2:
+                build_durations.append(duration.total_seconds())
+            print('Build durations:', build_durations)
+            # Formula for Z score = (Observation — Mean)/Standard Deviation
+            print()
+            print('Count:', len(build_durations))
+            print('Max:', max(build_durations))
+            print('Min:', min(build_durations))
+            mean = statistics.mean(build_durations)
+            print('Mean:', mean)
+            standard_deviation = statistics.stdev(build_durations)
+            print('Standard deviation:', standard_deviation)
+            print('This run:', duration.total_seconds())
+            z_score = (duration.total_seconds() - mean) / standard_deviation
+            print('Z-score:', z_score)
+            if 'Z_SCORE' in os.environ:
+                max_z_score = float(os.environ['Z_SCORE'] or 0)
+            else:
+                max_z_score = 0.0
+            print('Maximum z-score:', max_z_score)
+            if z_score > max_z_score:
+                print('Z-score above maximum')
+                exit(1)
+            else:
+                print('Z-score below maximum')
 
     exit(FAILED)
