@@ -75,4 +75,9 @@ I'm more than happy to receive contributions.
 
 But if you have an idea please create an issue first so we can discuss it.
 
-And it takes about 30 minutes to build the container and run functional and performance tests for pull requests.
+It takes about 30 minutes to build the container and run functional and
+performance tests for pull requests to master.
+
+Subsequent pull requests to the stable branch trigger the burn in tests. These
+take about 5 hours. So it might take some time for changes in the `mainline`
+image to make it into the `stable` image.
