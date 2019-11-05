@@ -3,4 +3,13 @@
 # make directory /var/log/nginx if needed
 mkdir --parents /var/log/nginx
 
-nginx -g "daemon off;"
+service cron start
+
+# Launch NGINX
+echo "starting nginx ..."
+nginx -g "daemon off;" &
+
+nginx_pid=$!
+wait ${nginx_pid}
+
+echo "nginx master process has stopped, exiting."
