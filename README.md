@@ -19,6 +19,14 @@ functional, performance and burn in tests. It is paired to the `stable` branch.
 `mainline` has passed functional and performance tests, but not burn in tests.
 It is paired to the `master` branch.
 
+## NGINX Amplify
+
+This image includes the NGINX Amplify agent.
+
+To make enable the agent you need to set the `AMPLIFY_API_KEY` environment
+variable and optionally the `AMPLIFY_IMAGENAME` variable
+(defaults to "Web Application Firewall").
+
 ## Tests
 
 _Functional tests_ perform a sequence of requests to validate that the rule

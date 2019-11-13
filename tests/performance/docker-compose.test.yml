@@ -12,6 +12,9 @@ services:
       context: ../../
     volumes:
       - ./nginx-waf-conf.d:/etc/nginx/conf.d
+    environment:
+      - AMPLIFY_API_KEY=${AMPLIFY_API_KEY}
+      - AMPLIFY_IMAGENAME=${AMPLIFY_IMAGENAME}
     ports:
       - "8080"
 

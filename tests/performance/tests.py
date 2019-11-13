@@ -82,7 +82,7 @@ if __name__ == '__main__':
         with open('previous-builds.json', 'rt') as f:
             builds_json = f.read()
         builds = json.loads(builds_json)
-        if len(builds) < 5:
+        if builds is None or len(builds) < 5:
             print('Insufficient build history to perform analysis')
         else:
             build_durations = []

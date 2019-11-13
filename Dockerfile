@@ -1,8 +1,12 @@
 FROM ubuntu:18.04
 
+ENV AMPLIFY_API_KEY=
+ENV AMPLIFY_IMAGENAME="Web Application Firewall"
+
 ARG NGINX_VERSION=1.17.3
 ARG MODSECURITY_VERSION=3.0.3
 ARG OWASP_CRS_VERSION=3.1.1
+ARG UBUNTU_VARIANT=bionic
 
 # install nginx as per https://nginx.org/en/linux_packages.html#Ubuntu
 
@@ -84,8 +88,7 @@ RUN mkdir /etc/nginx/modsec \
     && sed -i "s/SecRuleEngine \S*/SecRuleEngine On/" /etc/nginx/modsec/modsecurity.conf \
     && chown root:nginx modsecurity.conf \
     && wget https://raw.githubusercontent.com/SpiderLabs/ModSecurity/v${MODSECURITY_VERSION}/unicode.mapping
-COPY modsec.conf /etc/nginx/modsec/main.conf
-COPY modsec-detectiononly.conf /etc/nginx/modsec/main-detectiononly.conf
+COPY modsec/* /etc/nginx/modsec/
 
 # download OWASP CRS
 RUN wget -O owasp-crs.tar.gz https://github.com/SpiderLabs/owasp-modsecurity-crs/archive/v${OWASP_CRS_VERSION}.tar.gz \
@@ -95,6 +98,18 @@ RUN wget -O owasp-crs.tar.gz https://github.com/SpiderLabs/owasp-modsecurity-crs
     && cp crs-setup.conf.example crs-setup.conf \
     && cd / \
     && rm -R owasp-crs.tar.gz
+
+# Install the NGINX Amplify Agent
+RUN apt-get update \
+    && apt-get install -qqy curl python apt-transport-https apt-utils gnupg1 procps \
+    && echo "deb https://packages.amplify.nginx.com/ubuntu/ ${UBUNTU_VARIANT} amplify-agent" > /etc/apt/sources.list.d/nginx-amplify.list \
+    && curl -fs https://nginx.org/keys/nginx_signing.key | apt-key add - > /dev/null 2>&1 \
+    && apt-get update \
+    && apt-get install -qqy nginx-amplify-agent \
+    && apt-get purge -qqy curl apt-transport-https apt-utils gnupg1 \
+    && rm -rf /etc/apt/sources.list.d/nginx-amplify.list \
+    && rm -rf /var/lib/apt/lists/*
+COPY stub_status.conf /etc/nginx-conf.d/stub_status.conf
 
 # copy in our nginx conf
 COPY nginx.conf /etc/nginx/nginx.conf
