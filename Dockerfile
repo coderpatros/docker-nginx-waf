@@ -1,8 +1,8 @@
 FROM ubuntu:18.04
 
-ARG NGINX_VERSION=1.17.3
-ARG MODSECURITY_VERSION=3.0.3
-ARG OWASP_CRS_VERSION=3.1.1
+ARG NGINX_VERSION=1.17.8
+ARG MODSECURITY_VERSION=3.0.4
+ARG OWASP_CRS_VERSION=3.2.0
 
 # install nginx as per https://nginx.org/en/linux_packages.html#Ubuntu
 
