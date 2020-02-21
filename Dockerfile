@@ -72,7 +72,6 @@ RUN git clone --depth 1 https://github.com/SpiderLabs/ModSecurity-nginx.git \
     && rm -R nginx-${NGINX_VERSION}.tar.gz
 
 # copy in modsecurity recommended config and our config
-# SecRuleEngine is set in `entrypoint.sh`
 # SecAuditEngine is off as per "Implementing ModSecurity in Production" section of "MODSECURITY 3.0 & NGINX: Quick Start Guide"
 RUN mkdir /etc/nginx/modsec \
     && cd /etc/nginx/modsec \
@@ -81,6 +80,7 @@ RUN mkdir /etc/nginx/modsec \
     && cp modsecurity.conf modsecurity-detectiononly.conf \
     && sed -i "s/SecAuditEngine \S*/SecAuditEngine Off/" /etc/nginx/modsec/modsecurity.conf \
     && sed -i "s/SecRuleEngine \S*/SecRuleEngine On/" /etc/nginx/modsec/modsecurity.conf \
+    && sed -i "s#SecAuditLog \S*#SecAuditLog /dev/stdout#" /etc/nginx/modsec/modsecurity.conf \
     && chown root:nginx modsecurity.conf \
     && wget https://raw.githubusercontent.com/SpiderLabs/ModSecurity/v${MODSECURITY_VERSION}/unicode.mapping
 COPY modsec.conf /etc/nginx/modsec/main.conf
