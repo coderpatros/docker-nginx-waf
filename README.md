@@ -1,6 +1,5 @@
 ![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/coderpatros/nginx-waf)
 ![Docker Pulls](https://img.shields.io/docker/pulls/coderpatros/nginx-waf.svg)
-[![](https://images.microbadger.com/badges/image/coderpatros/nginx-waf.svg)](https://microbadger.com/images/coderpatros/nginx-waf "Get your own image badge on microbadger.com")
 ![GitHub](https://img.shields.io/github/license/patros/docker-nginx-waf)
 
 # NGINX WAF Docker Container
