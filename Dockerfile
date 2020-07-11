@@ -2,7 +2,7 @@ FROM ubuntu:18.04
 
 ARG NGINX_VERSION=1.17.10
 ARG MODSECURITY_VERSION=3.0.4
-ARG OWASP_CRS_VERSION=3.2.0
+ARG OWASP_CRS_VERSION=3.3.0
 
 # install nginx as per https://nginx.org/en/linux_packages.html#Ubuntu
 
@@ -87,9 +87,9 @@ COPY modsec.conf /etc/nginx/modsec/main.conf
 COPY modsec-detectiononly.conf /etc/nginx/modsec/main-detectiononly.conf
 
 # download OWASP CRS
-RUN wget -O owasp-crs.tar.gz https://github.com/SpiderLabs/owasp-modsecurity-crs/archive/v${OWASP_CRS_VERSION}.tar.gz \
+RUN wget -O owasp-crs.tar.gz https://github.com/coreruleset/coreruleset/archive/v${OWASP_CRS_VERSION}.tar.gz \
     && tar -xzvf owasp-crs.tar.gz \
-    && mv owasp-modsecurity-crs-${OWASP_CRS_VERSION}/ /usr/local/owasp-modsecurity-crs/ \
+    && mv coreruleset-${OWASP_CRS_VERSION}/ /usr/local/owasp-modsecurity-crs/ \
     && cd /usr/local/owasp-modsecurity-crs \
     && cp crs-setup.conf.example crs-setup.conf \
     && cd / \
