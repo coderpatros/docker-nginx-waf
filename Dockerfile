@@ -81,7 +81,7 @@ RUN mkdir /etc/nginx/modsec \
     && sed -i "s/SecAuditEngine \S*/SecAuditEngine Off/" /etc/nginx/modsec/modsecurity.conf \
     && sed -i "s/SecRuleEngine \S*/SecRuleEngine On/" /etc/nginx/modsec/modsecurity.conf \
     && sed -i "s#SecAuditLog \S*#SecAuditLog /dev/stdout#" /etc/nginx/modsec/modsecurity.conf \
-    && chown root:nginx modsecurity.conf \
+    && chown root:root modsecurity.conf \
     && wget https://raw.githubusercontent.com/SpiderLabs/ModSecurity/v${MODSECURITY_VERSION}/unicode.mapping
 COPY modsec.conf /etc/nginx/modsec/main.conf
 COPY modsec-detectiononly.conf /etc/nginx/modsec/main-detectiononly.conf
