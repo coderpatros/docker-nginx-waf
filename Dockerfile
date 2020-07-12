@@ -64,7 +64,7 @@ RUN git clone --depth 1 https://github.com/SpiderLabs/ModSecurity-nginx.git \
     && cd nginx-${NGINX_VERSION} \
     && ./configure --with-compat --add-dynamic-module=../ModSecurity-nginx \
     && make modules \
-    && cp objs/ngx_http_modsecurity_module.so /etc/nginx/modules \
+    && cp objs/ngx_http_modsecurity_module.so /usr/lib/nginx/modules/ \
     && sed -i '1iload_module modules/ngx_http_modsecurity_module.so;' /etc/nginx/nginx.conf \
     && cd / \
     && rm -R ModSecurity-nginx \
@@ -94,6 +94,11 @@ RUN wget -O owasp-crs.tar.gz https://github.com/coreruleset/coreruleset/archive/
     && cp crs-setup.conf.example crs-setup.conf \
     && cd / \
     && rm -R owasp-crs.tar.gz
+
+# copy bash script to add brolti module
+COPY make_add_brotli.sh /tmp/make_add_brotli.sh
+RUN /tmp/make_add_brotli.sh ${NGINX_VERSION} \
+    && rm /tmp/make_add_brotli.sh
 
 # copy in our nginx conf
 COPY nginx.conf /etc/nginx/nginx.conf
